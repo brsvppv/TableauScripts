@@ -1,4 +1,4 @@
-Function Invoke-TableauBackup {
+Function New-TableauBackup {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
@@ -43,4 +43,4 @@ Function Invoke-TableauBackup {
     ####Cleanup Files up to 7 days
         tsm maintenance cleanup -l --log-files-retention 7
 }
-Invoke-TableauBackup -Location "C:\Temp"
+New-TableauBackup -Location "C:\Temp"

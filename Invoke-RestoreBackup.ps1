@@ -8,13 +8,14 @@ function Invoke-RestoreTSBackup {
     )
     
     Set-Location $FilePath
+    $FullPath = Join-Path -Path $FilePath -ChildPath $FileName
     
     Try {
-        tsm maintenance restore $FileName --no-config 
+        tsm maintenance restore -f $FullPath
     }
     Catch {
         Write-Warning "ERROR"
         Write-Host $_
     }
 }
-Invoke-RestoreTSBackup -FilePath 'C:Temp' -FileName 'Test.tsbak'
+Invoke-RestoreTSBackup 
