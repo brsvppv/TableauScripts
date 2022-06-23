@@ -1,4 +1,5 @@
-Function Get-TSLastVersion {
+
+Function Get-TSLastVersion() {
     #Define Web Request LInk
     $WebResponse = Invoke-WebRequest 'https://www.tableau.com/support/releases/server'
     #Get Link in the HTML for realsed version
@@ -20,14 +21,22 @@ Function Get-TSLastVersion {
     $ObjectLink = $ObjectVersion.Replace("." , "-")
 
     #Build the version URL Download Link
-    $global:RootURL = 'https://downloads.tableau.com/esdalt'
-    $global:VerURL = $ObjectVersion
-    $global:ObjectFile = "TableauServer-64bit-" + "$ObjectLink" + ".exe"
-    $global:FileURL = ($global:RootURL, $global:VerURL, $global:ObjectFile ) -Join ("/")
-
+    $RootURL = 'https://downloads.tableau.com/esdalt'
+    $VerURL = $ObjectVersion
+    $ObjectFile = "TableauServer-64bit-" + "$ObjectLink" + ".exe"
+    $FileURL = ($RootURL, $VerURL, $ObjectFile ) -Join ("/")
+    #If(!Test-Path $Destination)
     #Notify the user for the created Variables /version/file/Link
     write-host "Version Directory Link: $ObjectVersion" -ForegroundColor Green
-    write-host "File Link: $global:ObjectFile" -ForegroundColor Cyan
-    Write-Warning "URL BUilder Link: $global:FileURL"
+    write-host "File Link: $ObjectFile" -ForegroundColor Cyan
+    Write-Warning "URL BUilder Link: $FileURL"
+    $UserDownloads = (New-Object -ComObject Shell.Application).NameSpace('shell:Downloads').Self.Path
+    Try{
+        Start-BitsTransfer -Source $FileURL -Destination $UserDownloads -TransferType Download -Priority Foreground 
+    }
+    Catch{
+        Write-Output $_
+    }
+    
 }
 Get-TSLastVersion

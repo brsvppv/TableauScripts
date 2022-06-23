@@ -30,4 +30,4 @@ tsm configuration set -k basefilepath.site_import.exports -v $ConfigBackuFile
 New-TSBackupLocation -BackupFilePath '' `
 -LogBackupPath '' `
 -SitesExportPath '' `
--ConfigBackuFile '' `
+-ConfigBackuFile ''
