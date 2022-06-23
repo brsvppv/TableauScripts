@@ -160,4 +160,4 @@ Invoke-TableauBackupToSFTP -Location "C:\Temp\" `
     -FtpUser 'teamvision' `
     -FtpKey 'CEcPQn536bDDCPvq' `
     -SSHKey 'ssh-rsa 2048 Bw5vZmmlX2CSqDJmd/7avGV5Mu2BPeFyNKK4vjAZCHE=' `
-    -FtpDirectory '/Private/*' `
+    -FtpDirectory '/Private/*'
