@@ -27,3 +27,7 @@ tsm configuration set -k basefilepath.site_export.exports -v $SitesExportPath
 tsm configuration set -k basefilepath.site_import.exports -v $ConfigBackuFile 
 #"C:\TableauData\SiteImports"
 }
+New-TSBackupLocation -BackupFilePath '' `
+-LogBackupPath '' `
+-SitesExportPath '' `
+-ConfigBackuFile '' `

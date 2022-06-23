@@ -10,7 +10,7 @@ Function Invoke-UploadSFTP {
         [Parameter(Mandatory)]$SSHKey,
         [Parameter(Mandatory)]$File,
         [Parameter(Mandatory)]$ftpDir,
-        [Parameter()]$UploadStatus = $null
+        $UploadStatus = $null
     )   
     # Load WinSCP .NET assembly
     Add-Type -Path "$pathWinSCP\WinSCPnet.dll"
@@ -48,4 +48,11 @@ Function Invoke-UploadSFTP {
         write-host $StatusMSG
     }
 }
-Invoke-UploadSFTP
+Invoke-UploadSFTP -WinSCP '' `
+-ServerAddress '' `
+-ServerPort '' `
+-FtpUser '' `
+-FtpKey '' `
+-SSHKey '' `
+-ftpDir '' `
+-File ''

@@ -76,7 +76,6 @@ Function New-TSBackup {
         Rename-Item -Path "$WorkingDirectory\logs.zip" -NewName "$backupName-logs.zip"   -ErrorAction Stop
         #create final Archive with all files
         Compress-Archive "$WorkingDirectory\*" -CompressionLevel Optimal -Update -DestinationPath $Location\$backupName -ErrorAction Stop
-        
 
         ####Cleanup Files up to 7 days
         tsm maintenance cleanup -l --log-files-retention 7
@@ -91,7 +90,7 @@ Function New-TSBackup {
         Invoke-WriteToLog("Tableau Backup Successful: " + $Status + $OFS + $_.Exception)
     }
     finally {
-            
+        Invoke-WriteToLog("Archive Backup Created Succesfully:" + $backupName ) 
     }
 }
 
