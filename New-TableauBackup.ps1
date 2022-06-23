@@ -1,4 +1,4 @@
-Function New-TableauBackup {
+Function New-TSBackup {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
@@ -12,15 +12,13 @@ Function New-TableauBackup {
     ####Set Temporary Archive Location
         $TempLocation = $Location
     ####BackupName
-        $backupName = "$dateAndtime" + "_" + "$env:COMPUTERNAME" + "_" + "FullTableauBackup"
+    $backupName = "$dateAndtime" + "_" + "$env:COMPUTERNAME"
     ### Get Default Backup Location
         $backupfilepath =  tsm configuration get -k basefilepath.backuprestore
     ####Get Default Backup Location of ziplogs:
         $logarchivepath = tsm configuration get -k basefilepath.log_archive
     ####Get Default Export Location
         $jsonExportPath = tsm configuration get -k basefilepath.site_export.exports
-    ####Set BackupName File Name
-        $backupName = "$dateAndtime" + "_" + "$env:COMPUTERNAME"
     ####CreateTimestamp Directory
         New-Item -path "$TempLocation" -name $dateAndtime -Itemtype "directory"     
     ####Create Tableau Backup
@@ -43,4 +41,4 @@ Function New-TableauBackup {
     ####Cleanup Files up to 7 days
         tsm maintenance cleanup -l --log-files-retention 7
 }
-New-TableauBackup -Location "C:\Temp"
+New-TSBackup -Location "C:\Temp"

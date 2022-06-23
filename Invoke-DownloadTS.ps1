@@ -1,4 +1,4 @@
-Function Invoke-DownloadTbServer {
+Function Invoke-DownloadTSInstall {
     Write-Host "Example" -ForegroundColor Cyan
     Write-Host "2020-3-1" -ForegroundColor Green
 
