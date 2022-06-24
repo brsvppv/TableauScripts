@@ -13,9 +13,11 @@ Function Invoke-TableauBackupToSFTP {
         [Parameter(Mandatory)]$FtpDirectory,
         $UploadStatus = $null,
         $FileTimeStamp = (Get-Date -Format 'O').Replace(':', '-').Replace('-', '.').Replace('.', '').Replace('+', ""),
-        $backupName = "$FileTimeStamp" + "$env:COMPUTERNAME"
+        $backupName = "$FileTimeStamp" +'-' +"$env:COMPUTERNAME",
+        $LogFile = $Location + 'tsbackup.log'
     )
-    
+    If (!(Test-Path $LogFile)) { New-Item -Path $LogFile -Itemtype 'File' }
+
     Function Invoke-WriteToLog($EventInfo) {
         $OFS = "`r`n"
         #(Get-Date -Format 'o' | ForEach-Object { $_ -replace ":", "." })
@@ -43,7 +45,7 @@ Function Invoke-TableauBackupToSFTP {
         ############ Default PARAMS ##############
         $Status = $null
 
-        $LogFile = $Location + 'tsbackup.log'
+       
         # Temp Directory
         $DirectoryID = ([Guid]::NewGuid().ToString())
         $WorkingDirectory = [System.IO.Path]::Combine( $env:TEMP, $DirectoryID)
@@ -54,8 +56,8 @@ Function Invoke-TableauBackupToSFTP {
 
 
         #Create Directories & log file
-        If (!(Test-Path $Location)) { New-Item -Path $WorkingDirectory -Itemtype 'Directory' }
-        If (!(Test-Path $LogFile)) { New-Item -Path $LogFile -Itemtype 'File' }
+        If (!(Test-Path $Location)) { New-Item -Path $Location -Itemtype 'Directory' }
+       
         If (!(Test-Path $WorkingDirectory)) { 
             New-Item -Path $WorkingDirectory -Itemtype 'Directory' 
             Invoke-WriteToLog("Creating Temporary Directory $WorkingDirectory")
@@ -113,7 +115,8 @@ Function Invoke-TableauBackupToSFTP {
     New-TSBackup
     Function Invoke-UploadSFTP() {
 
-        $FilePath = Join-Path -Path $Location -ChildPath $backupName
+        $FilePath = Join-Path -Path $Location -ChildPath "$backupName.zip"
+
         if ([System.IO.File]::Exists($FilePath) -eq $true) {
             try {
                 # Load WinSCP .NET assembly
@@ -136,7 +139,7 @@ Function Invoke-TableauBackupToSFTP {
                 # Connect
                 $session.Open($sessionOptions)
                 # Transfer files
-                $session.PutFiles("$File", "$FtpDirectory").Check()
+                $session.PutFiles("$FilePath", "$FtpDirectory").Check()
             }
             catch {             
                 Invoke-WriteToLog = ($_.Exception.Message)
@@ -146,18 +149,17 @@ Function Invoke-TableauBackupToSFTP {
             }
         }
         else {
-            Invoke-WriteToLog('File to Upload - Not Found')
+            Invoke-WriteToLog("File to Upload - Not Found - $FilePath")
         }
-    }
-    
+    }  
     Invoke-UploadSFTP
 
 }
 Invoke-TableauBackupToSFTP -Location "C:\Temp\" `
     -WinSCP 'C:\!DO_NOT_DELETE\WinSCP-5.17.8-Automation' `
-    -ServerAddress '193.104.79.68' `
-    -ServerPort '7104' `
-    -FtpUser 'teamvision' `
-    -FtpKey 'CEcPQn536bDDCPvq' `
-    -SSHKey 'ssh-rsa 2048 Bw5vZmmlX2CSqDJmd/7avGV5Mu2BPeFyNKK4vjAZCHE=' `
+    -ServerAddress '' `
+    -ServerPort '' `
+    -FtpUser '' `
+    -FtpKey '' `
+    -SSHKey '' `
     -FtpDirectory '/Private/*'
