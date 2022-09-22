@@ -1,4 +1,3 @@
-
 Function Get-TSLastVersion() {
     #Define Web Request LInk
     $WebResponse = Invoke-WebRequest 'https://www.tableau.com/support/releases/server'
