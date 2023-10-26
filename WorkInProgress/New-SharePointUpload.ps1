@@ -124,10 +124,11 @@ $LibraryName,
 $SPOnlineUserName,
 [Parameter(Mandatory)]
 $SPOnlineUserKey,
-$MSCDLL = 'C:\DO_NOT_DELETE\Microsoft.SharePoint.Client.dll',
-$MSCRDLL = 'C:\DO_NOT_DELETE\Microsoft.SharePoint.Client.Runtime.dll'
+[Parameter(Mandatory)]
+$MSCDLL,
+[Parameter(Mandatory)]
+$MSCRDLL 
 )
-
 $Context = New-Object Microsoft.SharePoint.Client.ClientContext($SiteURL)
 $SecurePassword = ConvertTo-SecureString $SPOnlineUserKey -AsPlainText -Force
 $Context.Credentials = New-Object Microsoft.SharePoint.Client.SharePointOnlineCredentials($SPOnlineUserName, $SecurePassword)
@@ -142,7 +143,10 @@ foreach ($fileName in Get-ChildItem $FilesLocation -Recurse) {
 }
 }  
 
+
 Invoke-SPOUpload `
+-MSCDLL 'C:\DO_NOT_DELETE\Microsoft.SharePoint.Client.dll' `
+-MSCRDLL 'C:\DO_NOT_DELETE\Microsoft.SharePoint.Client.Runtime.dll'
 -FilesLocation 'C:\TEMP\TestUpload' `
 -SPOnlineUserName 'user@example.onmicrosoft.com' `
 -SPOnlineUserKey 'usrpass' `
