@@ -10,12 +10,11 @@ Function Get-TSLastVersion() {
 
         $innerString = $version.innerText.ToString() 
         $WebVersionString.Add($innerString)
-        $InfoArray = $innerString.Split(" ")
+        #$InfoArray = $innerString.Split(" ")
 
     }
     #Select the 1-st relaesed version in the array - considered as the last uploaded version
-    $FirstObject = ($WebVersionString | Select-Object -First 1)
-    $InfoArray = $FirstObject.Split(" ")
+    $InfoArray = $WebVersionString[1].Split(" ")
     $ObjectVersion = $InfoArray[1]
     $ObjectLink = $ObjectVersion.Replace("." , "-")
 
