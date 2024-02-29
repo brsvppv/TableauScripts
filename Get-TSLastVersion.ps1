@@ -13,9 +13,12 @@ Function Get-TSLastVersion() {
         #$InfoArray = $innerString.Split(" ")
 
     }
+
     #Select the 1-st relaesed version in the array - considered as the last uploaded version
-    $InfoArray = $WebVersionString[1].Split(" ")
+    $InfoArray = $WebVersionString[0].Split(" ")
+
     $ObjectVersion = $InfoArray[1]
+
     $ObjectLink = $ObjectVersion.Replace("." , "-")
 
     #Build the version URL Download Link
@@ -29,10 +32,10 @@ Function Get-TSLastVersion() {
     write-host "File Link: $ObjectFile" -ForegroundColor Cyan
     Write-Warning "URL BUilder Link: $FileURL"
     $UserDownloads = (New-Object -ComObject Shell.Application).NameSpace('shell:Downloads').Self.Path
-    Try{
+    Try {
         Start-BitsTransfer -Source $FileURL -Destination $UserDownloads -TransferType Download -Priority Foreground 
     }
-    Catch{
+    Catch {
         Write-Output $_
     }
     
